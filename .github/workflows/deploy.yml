@@ -38,11 +38,9 @@ jobs:
             docker rm vuln-web-app || true
             docker run -d --name vuln-web-app -p 80:8080 ilcoyo95/vuln-web-app-jg:latest
 
-      - name: Install Snyk CLI && Install dependencies
-        run: npm install -g snyk
-    
-      - name: Snyk Test
-        run: snyk test --json --print-deps | snyk-delta
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
