@@ -40,7 +40,8 @@ jobs:
 
       - name: Run Vulnerability Scan
         run: |
-          docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable touch /zap/wrk/test.txt          
+          docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
+              -t http://137.184.48.242 -r testreport.html     
       - name: Upload Vulnerability Report
         uses: actions/upload-artifact@v3
         with:
