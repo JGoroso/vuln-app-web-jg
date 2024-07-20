@@ -38,20 +38,13 @@ jobs:
             docker rm vuln-web-app || true
             docker run -d --name vuln-web-app -p 80:8080 ilcoyo95/vuln-web-app-jg:latest
 
-      - name: Install Snyk CLI
+      - name: Install Snyk CLI && Install dependencies
         run: npm install -g snyk
     
-      - name: Run Vulnerability Scan with Snyk
-        run: |
-          snyk test --all-projects --json > snyk-report.json || (cat snyk-report.json && exit 1)
+      - name: Snyk Test
+        run: snyk test --json --print-deps | snyk-delta
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      - name: Upload Snyk Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: snyk-report
-          path: snyk-report.json
 
   deploy-heroku:
     name: Deploy to Heroku
