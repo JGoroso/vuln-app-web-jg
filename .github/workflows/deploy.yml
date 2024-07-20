@@ -40,9 +40,13 @@ jobs:
 
       - name: Run Vulnerability Scan
         run: |
-          docker run --rm -v /tmp/zap/wrk:/zap/wrk -v /tmp/zap/reports:/zap/reports owasp/zap2docker-stable zap-baseline.py -t http://<DROPLET_IP> -r /zap/reports/scan-report.html
+          docker run --rm -v /tmp/zap/wrk:/zap/wrk -v /tmp/zap/reports:/zap/reports owasp/zap2docker-stable zap-baseline.py -t http://137.184.48.242 -r /zap/reports/scan-report.html
           
-          
+      - name: Upload Vulnerability Report
+        uses: actions/upload-artifact@v3
+        with:
+            name: zap-scan-report
+            path: /zap/reports/scan-report.html
 
   deploy-heroku:
     name: Deploy to Heroku
