@@ -38,15 +38,20 @@ jobs:
             docker rm vuln-web-app || true
             docker run -d --name vuln-web-app -p 80:8080 ilcoyo95/vuln-web-app-jg:latest
 
-      - name: Run Vulnerability Scan
-        run: docker run -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py -t http://137.184.48.242
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+    
+      - name: Run Snyk Vulnerability Scan
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk test --all-projects --json > snyk-report.json
 
-      - name: Upload Vulnerability Report
+      - name: Upload Snyk Report
         uses: actions/upload-artifact@v3
         with:
-            name: zap-scan-report
-            path: /zap/reports/scan-report.html
-
+          name: snyk-report
+          path: snyk-report.json
+          
   deploy-heroku:
     name: Deploy to Heroku
     runs-on: ubuntu-latest
