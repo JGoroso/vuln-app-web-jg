@@ -43,12 +43,6 @@ jobs:
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --sarif-file-output=snyk.sarif
-      - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/analyze@v3
-        with:
-          sarif_file: snyk.sarif
 
   deploy-heroku:
     name: Deploy to Heroku
