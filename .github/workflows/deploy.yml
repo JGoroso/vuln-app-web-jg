@@ -37,8 +37,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t your-dockerhub-username/your-image-name:latest .
-          docker push your-dockerhub-username/your-image-name:latest
+          docker build -t ilcoyo95/vuln-web-app-jg:latest .
+          docker push ilcoyo95/vuln-web-app-jg:latest
 
       - name: SSH to Droplet and Deploy
         uses: appleboy/ssh-action@master
@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.DIGITALOCEAN_DROPLET_USER }}
           key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
           script: |
-            docker pull your-dockerhub-username/your-image-name:latest
-            docker stop your-container-name || true
-            docker rm your-container-name || true
-            docker run -d --name your-container-name -p 80:80 your-dockerhub-username/your-image-name:latest
+            docker pull ilcoyo95/vuln-web-app-jg:latest
+            docker stop vuln-web-app || true
+            docker rm vuln-web-app || true
+            docker run -d --name vuln-web-app -p 80:80 ilcoyo95/vuln-web-app-jg:latest
