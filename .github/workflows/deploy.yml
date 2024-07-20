@@ -3,7 +3,7 @@ name: Deploy Vulnerable Application                                  # workflow 
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   deploy-heroku:
     name: Deploy Heroku
