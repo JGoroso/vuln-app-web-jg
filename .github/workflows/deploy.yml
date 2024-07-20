@@ -39,14 +39,7 @@ jobs:
             docker run -d --name vuln-web-app -p 80:8080 ilcoyo95/vuln-web-app-jg:latest
 
       - name: Run Vulnerability Scan
-        run: |
-          docker run --rm \
-            -v $(pwd)/zap/wrk:/zap/wrk:rw \
-            -v $(pwd)/zap/reports:/zap/reports:rw \
-            -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
-            -t http://137.184.48.242 \
-            -g /zap/wrk/gen.conf \
-            -r /zap/reports/testreport.html
+        run: docker run -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py -t https://137.184.48.242
 
       - name: Upload Vulnerability Report
         uses: actions/upload-artifact@v3
